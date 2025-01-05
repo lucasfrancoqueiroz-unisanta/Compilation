@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace Compilation
 {
     public class Program
@@ -8,6 +10,8 @@ namespace Compilation
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDBConnection")));
 
             var app = builder.Build();
 
