@@ -11,7 +11,13 @@ namespace Compilation
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDBConnection")));
+            string? envConnectionString = Environment.GetEnvironmentVariable("connection_string");
+            string? connectionString = builder.Configuration.GetConnectionString("DefaultDBConnection");
+            if (connectionString != null )
+            {
+                connectionString = connectionString.Replace("{connection_string}", envConnectionString);
+            }
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
             var app = builder.Build();
 
